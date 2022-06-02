@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <div id="app">
+    <h1 id="browser">Datos del dispositivo</h1>
+    <p id=navegador></p>
+    <p id=cpu></p>
+    <p id=device></p>
+    <p id=os></p>
+  </div>
+<script src="./node_modules/ua-parser-js/dist/ua-parser.min.js"></script>
+<script>
+
+    var parser = new UAParser();
+    var result = parser.getResult();
+    console.log(result);
+
+    let browser = document.getElementById("navegador").innerHTML = "Navegador: " + result.browser.name + " " + result.browser.version;
+    let cpu = document.getElementById("cpu").innerHTML = `CPU: ${result.cpu.architecture != undefined ? result.cpu.architecture : 'Es movil'}`;
+    let device = document.getElementById("device").innerHTML = "Dispositivo: " + result.device.model + " " + result.device.vendor + " " + result.device.type;
+    let os = document.getElementById("os").innerHTML = "Sistema operativo: " + result.os.name + " " + result.os.version;
+    console.log(navigator.userAgent);
+
+</script>
+</head>
+<body>
+</body>
+</html>
