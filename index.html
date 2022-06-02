@@ -2,26 +2,62 @@
 <html>
 <head>
   <div id="app">
-    <h1 id="browser">Datos del dispositivo</h1>
+    <h1>Datos del dispositivo</h1>
     <p id=navegador></p>
-    <p id=cpu></p>
     <p id=device></p>
+    <p id="engine"></p>
     <p id=os></p>
+    <p id=cpu></p>
+    <p id="sizeScreen"></p>
+    <p id="resolution"></p>
+    <p id="networkInformation"></p>
+    <p id="networkType"></p>
+    <p id="geolocalizacion"></p>
+    <p id="geo2"></p>
   </div>
 <script src="./ua-parser.js"></script>
 <script>
 
     var parser = new UAParser();
     var result = parser.getResult();
-    console.log(result);
-
     let browser = document.getElementById("navegador").innerHTML = "Navegador: " + result.browser.name + " " + result.browser.version;
-    let cpu = document.getElementById("cpu").innerHTML = `CPU: ${result.cpu.architecture != undefined ? result.cpu.architecture : 'Es movil'}`;
-    let device = document.getElementById("device").innerHTML = "Dispositivo: " + result.device.model + " " + result.device.vendor + " " + result.device.type;
-    let os = document.getElementById("os").innerHTML = "Sistema operativo: " + result.os.name + " " + result.os.version;
-    console.log(navigator.userAgent);
 
-</script>
+    let cpu = document.getElementById("cpu").innerHTML = `CPU: ${result.cpu.architecture != undefined ? result.cpu.architecture : 'Es movil'}`;
+
+    let device = document.getElementById("device").innerHTML = "Dispositivo: " + result.device.model + " " + result.device.vendor + " " + result.device.type;
+
+    let os = document.getElementById("os").innerHTML = "Sistema operativo: " + result.os.name + " " + result.os.version;
+
+    let engine = document.getElementById("engine").innerHTML = "Motor de renderizado: " + result.engine.name + " " + result.engine.version;
+
+    function getScreenSize() {
+      var w = window,
+        d = document,
+        e = d.documentElement,
+        g = d.getElementsByTagName('body')[0],
+        x = w.innerWidth || e.clientWidth || g.clientWidth,
+        y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+      return x + " x " + y;
+    }
+    let sizeScreen = document.getElementById("sizeScreen").innerHTML = "Tamaño de la pantalla: " + getScreenSize();
+    let resolution = document.getElementById("resolution").innerHTML = "Resolución de la pantalla: " + screen.width + " x " + screen.height;
+
+    let networkInformation = document.getElementById("networkInformation").innerHTML = "Red: " + navigator.connection.effectiveType + " Velocidad " + navigator.connection.downlink + " Mbps";
+
+    let networkType = document.getElementById("networkType").innerHTML = "Tipo de red: " + navigator.connection.type;
+
+    if(navigator.geolocation){
+      var success = function(position){
+        var latitud = position.coords.latitude,
+            longitud = position.coords.longitude;
+        document.getElementById("geo2").innerHTML = "Latitud: " + latitud + " Longitud: " + longitud;
+      }
+      navigator.geolocation.getCurrentPosition(success, function(msg){
+      console.error( msg );
+      });
+    }
+    let geolocalizacion = document.getElementById("geolocalizacion").innerHTML = navigator.geolocation ? "Geolocalización: Sí" : "Geolocalización: No";
+    </script>
 </head>
 <body>
 </body>
